@@ -15,6 +15,7 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 RETURN_DIRECTORY="${PWD}"
 alias ret="cd ${RETURN_DIRECTORY}"
+alias df="df -h"
 
 # Find
 function f {
