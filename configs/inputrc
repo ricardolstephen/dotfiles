@@ -1,0 +1,2 @@
+# Use Alt/Meta + h to delete the preceding word.
+"\eh": backward-kill-word
