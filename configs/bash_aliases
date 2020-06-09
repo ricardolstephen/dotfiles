@@ -5,8 +5,8 @@ shopt -s direxpand
 # Aliases
 alias md="mkdir"
 alias sc="screen -d -R"
-alias ec="emacsclient -nw -a ''"
-alias em="emacsclient -c -a ''"
+alias ec="emacsclient -c -a ''"
+alias em="emacsclient -nw -a ''"
 alias l="less -R"
 alias rg="rg -S"
 alias ..="cd .."
@@ -64,8 +64,10 @@ function x {
 [[ $(type python3 2> /dev/null) ]] && alias py3="python3"
 
 # Make emacs the default editor
-export EDITOR="emacsclient -nw -a ''"
-export VISUAL="emacsclient -nw -a ''"
+# export EDITOR="emacsclient -nw -a ''"
+# export VISUAL="emacsclient -nw -a ''"
+export EDITOR="nano"
+export VISUAL="nano"
 
 # Load custom configurations
 if [[ "$(uname)" == "Darwin" ]]; then
