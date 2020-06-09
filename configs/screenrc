@@ -1,0 +1,74 @@
+## 
+## Set variables and keybindings for emacs compatibility (remapping Ctrl-A to Ctrl-T)
+##
+################################################################################
+
+# Settings
+markkeys "h=^B:l=^F:$=^E"             # Emacs style keybindings during copy mode movement in screen
+autodetach on                         # Automatically detach on hangup
+crlf off                              # No Microsoft linebreaks
+hardcopy_append on                    # Default: off
+startup_message off                   # Bypass the GPL notice, please
+vbell off                             # No visual bell
+escape "^Tt"                          # ctrl-A default interferes with emacs keybindings for terminal
+defscrollback 30000                   # Screen remembers more history
+shelltitle ""                         # Blank shell title
+silencewait 15                        # Default: 30
+# defmonitor on                         # Turn monitoring on (see 'activity')
+activity "activity in %n (%t) [%w:%s]~"
+bell "bell     in %n (%t) [%w:%s]~"
+
+# Change keybindings for convenience
+bind ^Q mapdefault
+bind q mapdefault
+bind k
+bind ^k
+bind .
+bind ^\
+bind \\
+bind ^h
+bind h
+bind ''
+bind 'L'
+bind '}' history
+bind ^a
+
+# aterm bindings
+bindkey "Oc" next
+bindkey "Od" prev
+
+# Emacs compatibility
+# Easy switching of windows without p/n confusion, as ctrl-p and ctrl-n
+# are frequently used in emacs but u/j are not...
+bind 'u' prev
+bind ^U prev
+bind 'j' next
+bind ^J next
+
+# Emacs compatibility for screen movement (if you use subscreen regions)
+# Using tab to move around regions gets annoying.  These help.
+bind ^P focus up
+bind 'p' focus up
+bind ^N focus down
+bind 'n' focus down
+bind ^F focus top
+bind 'f' focus top
+bind ^B focus bottom
+bind 'b' focus bottom
+
+
+##
+## Terminfo and hardstatus line
+##
+################################################################################
+
+# Allow bold colors
+attrcolor b ".I"
+# Tell screen how to set colors. AB = background, AF = foreground
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
+hardstatus alwayslastline
+hardstatus string '%{= kK}%-Lw%{= KW}%50>%n%f %t%{= kK}%+Lw%< %{=kG}%-= %M %d %c:%s%{-}'
+# Autoload two screen tabs
+screen 0
+screen 1
