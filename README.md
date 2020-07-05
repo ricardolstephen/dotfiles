@@ -1,5 +1,10 @@
 
 
+# Installation
+
+- mkdir local
+- mkdir local/defaults
+
 ## Hello World
 
 [ ] TODO dev branch
@@ -34,4 +39,9 @@ dotspacemacs-configuration-layers
      )
 ```
 
+
+dotspacemacs/user-config
+(load-file "/Users/leander/Documents/Storage/dotfiles3/configs/spacemacs.el")
+
+dotspacemacs-excluded-packages '(git-gutter+ git-gutter-fringe+)
 

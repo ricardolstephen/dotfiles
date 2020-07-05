@@ -110,4 +110,3 @@
   ;; (setq desktop-restore-frames nil)
   (add-hook 'desktop-no-desktop-file-hook (lambda () (desktop-save "~/.emacs.d")))
   (add-hook 'kill-emacs-hook (lambda () (desktop-save "~/.emacs.d"))))
-
