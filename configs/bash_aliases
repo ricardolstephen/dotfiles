@@ -1,6 +1,29 @@
-# Replace directory names with the results of word expansion when performing
-# filename completion.
-shopt -s direxpand
+# Bash prompt
+# Available colors
+RST="\[\e[0m\]"   # reset
+BLD="\[\e[1m\]"   # hicolor
+UNL="\[\e[4m\]"   # underline
+INV="\[\e[7m\]"   # inverse background and foreground
+FBLK="\[\e[30m\]" # foreground black
+FRED="\[\e[31m\]" # foreground red
+FGRN="\[\e[32m\]" # foreground green
+FYEL="\[\e[33m\]" # foreground yellow
+FBLU="\[\e[34m\]" # foreground blue
+FMAG="\[\e[35m\]" # foreground magenta
+FCYN="\[\e[36m\]" # foreground cyan
+FWHT="\[\e[37m\]" # foreground white
+BBLK="\[\e[40m\]" # background black
+BRED="\[\e[41m\]" # background red
+BGRN="\[\e[42m\]" # background green
+BYEL="\[\e[43m\]" # background yellow
+BBLU="\[\e[44m\]" # background blue
+BMAG="\[\e[45m\]" # background magenta
+BCYN="\[\e[46m\]" # background cyan
+BWHT="\[\e[47m\]" # background white
+# Prompt format
+PS1="$BLD$FGRN\u@\h$RST:$BLD$FBLU\w$RST$ "
+# Use a different PS1 for remote connections.
+[[ -n "$SSH_TTY" ]] && PS1="$BLD$FGRN\u@\h$RST:$BLD$FMAG\w$RST$ "
 
 # Aliases
 alias md="mkdir"
@@ -13,20 +36,27 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
+if [[ "$(uname)" == "Darwin" ]]; then
+    alias ls="ls -G"
+else
+    alias ls="ls --color"
+fi
+alias ll="ls -Alrth"
 RETURN_DIRECTORY="${PWD}"
 alias ret="cd ${RETURN_DIRECTORY}"
 alias df="df -h"
+alias grep='grep --color'
 
 # Find
 function f {
   if [[ $# -eq 1 ]]; then
     find . -iname "$1"
   elif [[ $# -eq 2 ]]; then
-    find "$2" -iname "$1"
+    find "$1" -iname "$2"
   else
     echo "Incorrect usage. Please use one of the below:"
     echo "  f \${str}"
-    echo "  f \${str} \${location}"
+    echo "  f \${location} \${str}"
   fi
 }
 
@@ -64,11 +94,54 @@ function x {
 [[ $(type python 2> /dev/null) ]] && alias py="python"
 [[ $(type python3 2> /dev/null) ]] && alias py3="python3"
 
+# Autocorrect typos in path names when using `cd`.
+shopt -s cdspell
+
+# Append to the Bash history file, rather than overwriting it.
+shopt -s histappend
+
+# Disable history expansion so `!` can be used in `rg -g !expr`.
+set +H
+
+# Replace directory names with the results of word expansion when performing
+# filename completion.
+shopt -s direxpand
+
+# Tab completions for many bash commands
+if [[ -f /etc/bash_completion ]]; then
+	  source /etc/bash_completion
+fi
+
 # Make emacs the default editor
 # export EDITOR="emacsclient -nw -a ''"
 # export VISUAL="emacsclient -nw -a ''"
 export EDITOR="nano"
 export VISUAL="nano"
+
+# Homebrew tab completions
+if type brew &>/dev/null; then
+    if [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]]; then
+        source "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+    else
+        for COMPLETION in "$(brew --prefix)/etc/bash_completion.d/"*; do
+            [[ -r "$COMPLETION" ]] && source "$COMPLETION"
+        done
+    fi
+fi
+
+# Scripts
+if [[ "$(uname)" == "Darwin" ]]; then
+    export PATH="$(dirname $(greadlink -f "${BASH_SOURCE[0]}"))/../scripts:${PATH}"
+else
+    export PATH="$(dirname $(readlink -f "${BASH_SOURCE[0]}"))/../scripts:${PATH}"
+fi
+
+# Dotfiles
+if [[ "$(uname)" == "Darwin" ]]; then
+    alias dotfiles="cd $(dirname $(dirname $(greadlink -f "${BASH_SOURCE[0]}")))"
+else
+    alias dotfiles="cd $(dirname $(dirname $(readlink -f "${BASH_SOURCE[0]}")))"
+fi
 
 # Load custom configurations
 if [[ "$(uname)" == "Darwin" ]]; then

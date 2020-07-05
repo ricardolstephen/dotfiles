@@ -15,25 +15,25 @@
        (if (use-region-p)
            (delete-region (point) (mark))
          (progn (forward-word) (delete-region p1 (point)))))
-(defun my-delete-forward-line () (interactive "*")
-       (cond ((use-region-p) (delete-region (point) (mark)))
-             ((eq (point) (line-end-position)) (delete-forward-char 1))
-             (t (delete-region (point) (line-end-position)))))
-(defun my-kill-ring-save-line-or-region () (interactive)
-       (if (use-region-p)
-           (kill-ring-save (point) (mark))
-         (kill-ring-save (point) (line-end-position))))
-(defun my-kill-line-or-region () (interactive "*")
-       (if (use-region-p)
-           (kill-region (point) (mark))
-         (kill-line)))
+;; (defun my-delete-forward-line () (interactive "*")
+;;        (cond ((use-region-p) (delete-region (point) (mark)))
+;;              ((eq (point) (line-end-position)) (delete-forward-char 1))
+;;              (t (delete-region (point) (line-end-position)))))
+;; (defun my-kill-ring-save-line-or-region () (interactive)
+;;        (if (use-region-p)
+;;            (kill-ring-save (point) (mark))
+;;          (kill-ring-save (point) (line-end-position))))
+;; (defun my-kill-line-or-region () (interactive "*")
+;;        (if (use-region-p)
+;;            (kill-region (point) (mark))
+;;          (kill-line)))
 (define-key global-map (kbd "C-h") 'delete-backward-char)
 (define-key global-map (kbd "C-d") 'delete-forward-char)
 (define-key global-map (kbd "M-h") 'my-delete-backward-word)
 (define-key global-map (kbd "M-d") 'my-delete-forward-word)
-(define-key global-map (kbd "C-k") 'my-delete-forward-line)
-(define-key global-map (kbd "M-w") 'my-kill-ring-save-line-or-region)
-(define-key global-map (kbd "M-k") 'my-kill-line-or-region)
+;; (define-key global-map (kbd "C-k") 'my-delete-forward-line)
+;; (define-key global-map (kbd "M-w") 'my-kill-ring-save-line-or-region)
+;; (define-key global-map (kbd "M-k") 'my-kill-line-or-region)
 
 ;; Window management
 (defun my-split-and-follow-below () (interactive)
@@ -89,13 +89,6 @@
 (with-eval-after-load "dired"
   (define-key dired-mode-map (kbd "k") 'dired-kill-subdir))
 
-;; Desktop-save
-(when (daemonp)
-  (desktop-save-mode 1)
-  (setq desktop-restore-frames nil)
-  (add-hook 'desktop-no-desktop-file-hook (lambda () (desktop-save "~/.emacs.d")))
-  (add-hook 'kill-emacs-hook (lambda () (desktop-save "~/.emacs.d"))))
-
 ;; Text-mode
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
@@ -104,7 +97,17 @@
   (define-key markdown-mode-map (kbd "M-n")
     (lambda () (interactive) (next-line 5)))
   (define-key markdown-mode-map (kbd "M-p")
-    (lambda () (interactive) (next-line -5))))
+    (lambda () (interactive) (next-line -5)))
+  (define-key markdown-mode-map (kbd "M-h") 'my-delete-backward-word))
 
 ;; Java-mode
 (add-hook 'java-mode-hook (lambda () (setq fill-column 100)))
+
+;; Desktop-save
+(when (daemonp)
+  (desktop-save-mode 1)
+  (desktop-read)
+  ;; (setq desktop-restore-frames nil)
+  (add-hook 'desktop-no-desktop-file-hook (lambda () (desktop-save "~/.emacs.d")))
+  (add-hook 'kill-emacs-hook (lambda () (desktop-save "~/.emacs.d"))))
+
