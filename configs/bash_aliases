@@ -49,6 +49,17 @@ if [ $SHELL == /bin/bash ]; then
     if [[ -f /etc/bash_completion ]]; then
 	      source /etc/bash_completion
     fi
+
+    # Homebrew tab completions
+    if type brew &>/dev/null; then
+        if [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]]; then
+            source "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+        else
+            for COMPLETION in "$(brew --prefix)/etc/bash_completion.d/"*; do
+                [[ -r "$COMPLETION" ]] && source "$COMPLETION"
+            done
+        fi
+    fi
 fi
 
 # Zsh-specifics
@@ -78,6 +89,14 @@ if [ $SHELL == /bin/zsh ]; then
     setopt PROMPT_SUBST
     export PROMPT='%(!.${fg_red}.${fg_green})%n@${HOST_ALIAS}: ${fg_yellow}%~
 ${at_normal}%# '
+
+    # Homebrew tab completions
+    if type brew &>/dev/null; then
+        FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+        autoload -Uz compinit
+        compinit
+    fi
 fi
 
 # Aliases
@@ -150,10 +169,13 @@ function x {
 [[ $(type python3 2> /dev/null) ]] && alias py3="python3"
 
 # Make emacs the default editor
-export EDITOR="emacsclient -nw -a ''"
-export VISUAL="emacsclient -nw -a ''"
-# export EDITOR="nano"
-# export VISUAL="nano"
+if type emacsclient &>/dev/null; then
+    export EDITOR="emacsclient -nw -a ''"
+    export VISUAL="emacsclient -nw -a ''"
+else
+    export EDITOR="nano"
+    export VISUAL="nano"
+fi
 
 # Scripts
 if [[ "$(uname)" == "Darwin" ]]; then
