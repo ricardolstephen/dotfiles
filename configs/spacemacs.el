@@ -23,8 +23,6 @@
                        (file-name-directory
                         (file-truename load-file-name))))
                      "local/custom.el"))
-  (message custom-file)
-  ;; (setq custom-file "~/.emacs.d/custom.el")
   (when (file-exists-p custom-file)
     (load-file custom-file)))
 
