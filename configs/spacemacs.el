@@ -20,9 +20,10 @@
   (setq custom-file (concat
                      (file-name-directory
                       (directory-file-name
-                       (file-name-directory load-file-name)))
+                       (file-name-directory
+                        (file-truename load-file-name))))
                      "local/custom.el"))
-  (message "custom-file")
+  (message custom-file)
   ;; (setq custom-file "~/.emacs.d/custom.el")
   (when (file-exists-p custom-file)
     (load-file custom-file)))
