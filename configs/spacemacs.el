@@ -18,7 +18,8 @@
   (add-to-list 'package-selected-packages 'gnu-elpa-keyring-update)
 
   (setq custom-file "~/.emacs.d/custom.el")
-  (load-file custom-file))
+  (when (file-exists-p custom-file)
+    (load-file custom-file)))
 
 ;; Delete, kill
 (defun my-delete-backward-word (p1) (interactive "*d")
