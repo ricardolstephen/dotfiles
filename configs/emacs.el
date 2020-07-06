@@ -14,8 +14,9 @@
   (require 'package)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-  ;; https://emacs.stackexchange.com/questions/233
-  (add-to-list 'package-selected-packages 'gnu-elpa-keyring-update)
+  (unless (version< emacs-version "25.1")
+    ;; https://emacs.stackexchange.com/questions/233
+    (add-to-list 'package-selected-packages 'gnu-elpa-keyring-update))
 
   ;; Disable backup files
   (setq make-backup-files nil)
@@ -96,8 +97,8 @@
       (progn (call-interactively 'comment-line) (previous-line)))))
 
 ;; Isearch
-(with-eval-after-load "isearch"
-  (define-key isearch-mode-map (kbd "C-h") 'isearch-del-char))
+(eval-after-load "isearch"
+  (lambda () (define-key isearch-mode-map (kbd "C-h") 'isearch-del-char)))
 (add-hook 'isearch-mode-end-hook
           (lambda ()
             (when (and isearch-forward
@@ -109,19 +110,20 @@
 ;; In macOS, use `gls` instead of `ls`.
 ;; (when (string= system-type "darwin")
 ;;   (setq insert-directory-program (executable-find "gls")))
-(with-eval-after-load "dired"
-  (define-key dired-mode-map (kbd "k") 'dired-kill-subdir))
+(eval-after-load "dired"
+  (lambda () (define-key dired-mode-map (kbd "k") 'dired-kill-subdir)))
 
 ;; Text-mode
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; Markdown-mode
-(with-eval-after-load "markdown-mode"
-  (define-key markdown-mode-map (kbd "M-n")
-    (lambda () (interactive) (next-line 5)))
-  (define-key markdown-mode-map (kbd "M-p")
-    (lambda () (interactive) (next-line -5)))
-  (define-key markdown-mode-map (kbd "M-h") 'my-delete-backward-word))
+(eval-after-load "markdown-mode"
+  (lambda ()
+    (define-key markdown-mode-map (kbd "M-n")
+      (lambda () (interactive) (next-line 5)))
+    (define-key markdown-mode-map (kbd "M-p")
+      (lambda () (interactive) (next-line -5)))
+    (define-key markdown-mode-map (kbd "M-h") 'my-delete-backward-word)))
 
 ;; Java-mode
 (add-hook 'java-mode-hook (lambda () (setq fill-column 100)))
