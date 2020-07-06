@@ -17,6 +17,9 @@
   ;; https://emacs.stackexchange.com/questions/233
   (add-to-list 'package-selected-packages 'gnu-elpa-keyring-update)
 
+  ;; Disable backup files
+  (setq make-backup-files nil)
+
   (setq custom-file (concat
                      (file-name-directory
                       (directory-file-name

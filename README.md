@@ -41,7 +41,7 @@ dotspacemacs-configuration-layers
 
 
 dotspacemacs/user-config
-(load-file "/Users/leander/Documents/Storage/dotfiles3/configs/spacemacs.el")
+(load-file "/Users/leander/Documents/Storage/dotfiles3/configs/emacs.el")
 
 dotspacemacs-excluded-packages '(git-gutter+ git-gutter-fringe+)
 
