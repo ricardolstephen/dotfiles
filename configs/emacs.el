@@ -130,7 +130,7 @@
 
 ;; Desktop-save
 (when (daemonp)
-  (desktop-save-mode 1)
+  ;; (desktop-save-mode 1)
   (desktop-read)
   ;; (setq desktop-restore-frames nil)
   (add-hook 'desktop-no-desktop-file-hook (lambda () (desktop-save "~/.emacs.d")))
