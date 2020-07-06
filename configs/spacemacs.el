@@ -17,7 +17,13 @@
   ;; https://emacs.stackexchange.com/questions/233
   (add-to-list 'package-selected-packages 'gnu-elpa-keyring-update)
 
-  (setq custom-file "~/.emacs.d/custom.el")
+  (setq custom-file (concat
+                     (file-name-directory
+                      (directory-file-name
+                       (file-name-directory load-file-name)))
+                     "local/custom.el"))
+  (message "custom-file")
+  ;; (setq custom-file "~/.emacs.d/custom.el")
   (when (file-exists-p custom-file)
     (load-file custom-file)))
 
