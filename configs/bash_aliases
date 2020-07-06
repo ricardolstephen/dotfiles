@@ -1,3 +1,13 @@
+# Dotfiles
+if [[ $SHELL == /bin/zsh ]]; then
+    DOTFILES_DIR="$(dirname ${0:a:h})"
+elif [[ "$(uname)" == "Darwin" ]]; then
+    DOTFILES_DIR="$(dirname $(dirname $(greadlink -f \"${BASH_SOURCE[0]}\")))"
+else
+    DOTFILES_DIR="$(dirname $(dirname $(readlink -f "${BASH_SOURCE[0]}")))"
+fi
+alias dotfiles="cd $DOTFILES_DIR"
+
 # Enable 256color for screen terminals
 if [[ "$TERM" == "screen" ]]; then
     export TERM="screen-256color"
@@ -178,26 +188,9 @@ else
 fi
 
 # Scripts
-if [[ "$(uname)" == "Darwin" ]]; then
-    export PATH="$(dirname $(greadlink -f "${BASH_SOURCE[0]}"))/../scripts:${PATH}"
-else
-    export PATH="$(dirname $(readlink -f "${BASH_SOURCE[0]}"))/../scripts:${PATH}"
-fi
+export PATH="$DOTFILES_DIR/scripts:${PATH}"
 
-# Dotfiles
-if [[ "$(uname)" == "Darwin" ]]; then
-    alias dotfiles="cd $(dirname $(dirname $(greadlink -f "${BASH_SOURCE[0]}")))"
-else
-    alias dotfiles="cd $(dirname $(dirname $(readlink -f "${BASH_SOURCE[0]}")))"
-fi
-
-# Load custom configurations
-if [[ "$(uname)" == "Darwin" ]]; then
-  if [[ -f "$(dirname $(greadlink -f "${BASH_SOURCE[0]}"))/../local/custom" ]]; then
-    . "$(dirname $(greadlink -f "${BASH_SOURCE[0]}"))/../local/custom"
-  fi
-else
-  if [[ -f "$(dirname $(readlink -f "${BASH_SOURCE[0]}"))/../local/custom" ]]; then
-    . "$(dirname $(readlink -f "${BASH_SOURCE[0]}"))/../local/custom"
-  fi
+# Custom configurations
+if [[ -f "$DOTFILES_DIR/local/custom" ]]; then
+    . "$DOTFILES_DIR/local/custom"
 fi
