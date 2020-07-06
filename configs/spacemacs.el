@@ -1,10 +1,24 @@
-;; Global modes
-(define-globalized-minor-mode global-fci-mode fci-mode
-  (lambda () (when (and (not (string-match "^\*.*\*$" (buffer-name)))
-                        (not (equal major-mode 'dired-mode))
-                        (not (equal major-mode 'scratch-mode)))
-               (fci-mode 1))))
-(global-fci-mode)
+;; Spacemacs configuration
+(when (boundp 'dotspacemacs-emacs-leader-key)
+  (define-globalized-minor-mode global-fci-mode fci-mode
+    (lambda () (when (and (not (string-match "^\*.*\*$" (buffer-name)))
+                          (not (equal major-mode 'dired-mode))
+                          (not (equal major-mode 'scratch-mode)))
+                 (fci-mode 1))))
+  (global-fci-mode))
+
+;; Bare emacs configuration
+(unless (boundp 'dotspacemacs-emacs-leader-key)
+  (package-initialize)
+  
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+
+  ;; https://emacs.stackexchange.com/questions/233
+  (add-to-list 'package-selected-packages 'gnu-elpa-keyring-update)
+
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load-file custom-file))
 
 ;; Delete, kill
 (defun my-delete-backward-word (p1) (interactive "*d")
@@ -110,7 +124,3 @@
   ;; (setq desktop-restore-frames nil)
   (add-hook 'desktop-no-desktop-file-hook (lambda () (desktop-save "~/.emacs.d")))
   (add-hook 'kill-emacs-hook (lambda () (desktop-save "~/.emacs.d"))))
-
-;; Bare emacs configuration
-(unless (boundp 'dotspacemacs-emacs-leader-key)
-  (setq custom-file "~/.emacs.d/custom.el"))
