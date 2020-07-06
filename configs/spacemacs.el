@@ -110,3 +110,7 @@
   ;; (setq desktop-restore-frames nil)
   (add-hook 'desktop-no-desktop-file-hook (lambda () (desktop-save "~/.emacs.d")))
   (add-hook 'kill-emacs-hook (lambda () (desktop-save "~/.emacs.d"))))
+
+;; Bare emacs configuration
+(unless (boundp 'dotspacemacs-emacs-leader-key)
+  (setq custom-file "~/.emacs.d/custom.el"))
