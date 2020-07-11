@@ -39,6 +39,9 @@ Spacemacs configuration layers
      treemacs
      )
 ```
+```
+(spell-checking :variables spell-checking-enable-by-default nil)
+```
 
 
 <Note, use the actual path specific to the machine>
