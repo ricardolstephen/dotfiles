@@ -68,7 +68,8 @@ attrcolor b ".I"
 termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 
 hardstatus alwayslastline
-hardstatus string '%{= kK}%-Lw%{= KW}%50>%n%f %t%{= kK}%+Lw%< %{=kG}%-= %M %d %c:%s%{-}'
+# hardstatus string '%{= kK}%-Lw%{= KW}%50>%n%f %t%{= kK}%+Lw%< %{=kG}%-= %M %d %c:%s%{-}'
+hardstatus string '%{= kK}%-Lw%{= KW}%50>%n%f %t%{= kK}%+Lw%< %{=kG}%-=%{-}'
 # Autoload two screen tabs
 screen 0
 screen 1
