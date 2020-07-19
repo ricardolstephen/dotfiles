@@ -185,13 +185,17 @@ if type python3 &>/dev/null; then
 fi
 
 # Make emacs the default editor
-if type emacsclient &>/dev/null; then
-    export EDITOR="emacsclient -nw -a ''"
-    export VISUAL="emacsclient -nw -a ''"
-else
-    export EDITOR="nano"
-    export VISUAL="nano"
-fi
+export EDITOR="emacs -nw -q --load $DOTFILES_DIR/configs/init.el"
+export VISUAL="emacs -q --load $DOTFILES_DIR/configs/init.el"
+# export EDITOR="nano"
+# export VISUAL="nano"
+# if type emacsclient &>/dev/null; then
+#     export EDITOR="emacsclient -nw -a ''"
+#     export VISUAL="emacsclient -nw -a ''"
+# else
+#     export EDITOR="nano"
+#     export VISUAL="nano"
+# fi
 
 # Scripts
 export PATH="$DOTFILES_DIR/scripts:${PATH}"
