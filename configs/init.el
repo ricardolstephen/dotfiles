@@ -21,6 +21,14 @@
   ;; Disable backup files
   (setq make-backup-files nil)
 
+  ;; Customize the mode line
+  (column-number-mode)
+  (which-function-mode)
+
+  ;; Load custom configs
+  (load-file (concat (file-name-directory (file-truename load-file-name)) "modules.el"))
+
+  ;; Load custom file
   (setq custom-file (concat
                      (file-name-directory
                       (directory-file-name
@@ -116,15 +124,6 @@
 ;; Text-mode
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
-;; Markdown-mode
-(eval-after-load "markdown-mode"
-  (lambda ()
-    (define-key markdown-mode-map (kbd "M-n")
-      (lambda () (interactive) (next-line 5)))
-    (define-key markdown-mode-map (kbd "M-p")
-      (lambda () (interactive) (next-line -5)))
-    (define-key markdown-mode-map (kbd "M-h") 'my-delete-backward-word)))
-
 ;; Java-mode
 (add-hook 'java-mode-hook (lambda () (setq fill-column 100)))
 
@@ -135,3 +134,16 @@
   ;; (setq desktop-restore-frames nil)
   (add-hook 'desktop-no-desktop-file-hook (lambda () (desktop-save "~/.emacs.d")))
   (add-hook 'kill-emacs-hook (lambda () (desktop-save "~/.emacs.d"))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Shared modules (spacemacs, bare emacs)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Markdown-mode
+(eval-after-load "markdown-mode"
+  (lambda ()
+    (define-key markdown-mode-map (kbd "M-n")
+      (lambda () (interactive) (next-line 5)))
+    (define-key markdown-mode-map (kbd "M-p")
+      (lambda () (interactive) (next-line -5)))
+    (define-key markdown-mode-map (kbd "M-h") 'my-delete-backward-word)))
