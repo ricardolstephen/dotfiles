@@ -50,3 +50,12 @@ dotspacemacs/user-config
 
 dotspacemacs-excluded-packages '(git-gutter+ git-gutter-fringe+)
 
+
+## Hello R2
+
+### groovy support
+
+[ ] build this https://github.com/prominic/groovy-language-server
+[ ] copy it to ~/groovy-lsp-all.jar
+
+Reference: https://emacs-lsp.github.io/lsp-mode/page/lsp-groovy/
