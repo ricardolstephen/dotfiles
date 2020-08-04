@@ -4,8 +4,9 @@
 
   (add-to-list 'package-selected-packages 'projectile)
   (projectile-mode +1)
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (eval-after-load "projectile"
+    (lambda ()
+      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
 
   (add-to-list 'package-selected-packages 'dired-subtree)
   (eval-after-load "dired-subtree"
