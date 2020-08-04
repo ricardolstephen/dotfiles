@@ -3,9 +3,9 @@
   (add-to-list 'package-selected-packages 'groovy-mode)
 
   (add-to-list 'package-selected-packages 'projectile)
-  (projectile-mode +1)
   (eval-after-load "projectile"
     (lambda ()
+      (projectile-mode +1)
       (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
 
   (add-to-list 'package-selected-packages 'dired-subtree)
