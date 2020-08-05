@@ -23,7 +23,7 @@ touch local/custom
 
 3. Install configs, and be sure to save backups in local/defaults.
 
-- bash\_profile - plain
+- bash\_profile - plain bash\_profile
 - bash_aliases - bash goodies
 - init.el - emacs startup script
 - inputrc - readline configuration
