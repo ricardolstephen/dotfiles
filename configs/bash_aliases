@@ -112,12 +112,10 @@ ${at_normal}%# '
 fi
 
 # Aliases
-alias md="mkdir"
 alias sc="screen -d -R"
 alias ec="emacsclient -nw -a ''"
 alias em="emacsclient -c -a ''"
 alias l="less -R"
-alias rg="rg -S"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
