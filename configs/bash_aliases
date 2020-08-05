@@ -102,6 +102,8 @@ if [[ $SHELL == /bin/zsh ]]; then
     export PROMPT='%(!.${fg_red}.${fg_green})%n@${HOST_ALIAS}: ${fg_yellow}%~
 ${at_normal}%# '
 
+    export WORDCHARS='*?_-.,[]~&;:!#$%^(){}<>\'
+
     # Homebrew tab completions
     if type brew &>/dev/null; then
         FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
