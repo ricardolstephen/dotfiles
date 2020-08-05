@@ -103,6 +103,7 @@ if [[ $SHELL == /bin/zsh ]]; then
 ${at_normal}%# '
 
     export WORDCHARS='*?_-.,[]~&;:!#$%^(){}<>\'
+    bindkey '^[h' backward-kill-word
 
     # Homebrew tab completions
     if type brew &>/dev/null; then
