@@ -6,10 +6,9 @@
   (add-hook 'markdown-mode-hook 'turn-off-auto-fill)
 
   (add-to-list 'package-selected-packages 'projectile)
-  (eval-after-load "projectile"
-    (lambda ()
-      (projectile-mode +1)
-      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
+  (when (require 'projectile nil t)
+    (projectile-mode +1)
+      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
   (add-to-list 'package-selected-packages 'dired-subtree)
   (eval-after-load "dired-subtree"
