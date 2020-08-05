@@ -1,6 +1,9 @@
 (unless (version< emacs-version "25.1")
-  (add-to-list 'package-selected-packages 'markdown-mode)
   (add-to-list 'package-selected-packages 'groovy-mode)
+
+  
+  (add-to-list 'package-selected-packages 'markdown-mode)
+  (add-hook 'markdown-mode-hook 'turn-off-auto-fill)
 
   (add-to-list 'package-selected-packages 'projectile)
   (eval-after-load "projectile"
