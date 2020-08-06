@@ -10,7 +10,7 @@
 ;; Bare emacs configuration
 (unless (boundp 'dotspacemacs-emacs-leader-key)
   (package-initialize)
-  
+
   (require 'package)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
@@ -119,7 +119,17 @@
 ;; (when (string= system-type "darwin")
 ;;   (setq insert-directory-program (executable-find "gls")))
 (eval-after-load "dired"
-  (lambda () (define-key dired-mode-map (kbd "k") 'dired-kill-subdir)))
+  (lambda ()
+    (define-key dired-mode-map (kbd "k") 'dired-kill-subdir)
+
+    ;; https://stackoverflow.com/a/50138457
+    (defun dired-subdir-aware (orig-fun &rest args)
+      (if (eq major-mode 'dired-mode)
+          (let ((default-directory (dired-current-directory)))
+            (apply orig-fun args))
+        (apply orig-fun args)))
+    (advice-add 'find-file-read-args :around 'dired-subdir-aware)
+    ))
 
 ;; Text-mode
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
