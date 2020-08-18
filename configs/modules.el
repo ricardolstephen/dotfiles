@@ -34,13 +34,4 @@
   ;;   (face-spec-set 'dired-subtree-depth-4-face '((t nil)) 'face-defface-spec)
   ;;   (face-spec-set 'dired-subtree-depth-5-face '((t nil)) 'face-defface-spec)
   ;;   (face-spec-set 'dired-subtree-depth-6-face '((t nil)) 'face-defface-spec))
-
-  ;; (add-to-list 'package-selected-packages 'fill-column-indicator)
-  ;; (require 'fill-column-indicator)
-  ;; (define-global-minor-mode global-fci-mode fci-mode
-  ;;   (lambda () (when (and (not (string-match "^\*.*\*$" (buffer-name)))
-  ;;                         (not (equal major-mode 'dired-mode))
-  ;;                         (not (equal major-mode 'scratch-mode)))
-  ;;                (fci-mode 1))))
-  ;; (global-fci-mode)
   )
