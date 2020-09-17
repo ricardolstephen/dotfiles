@@ -20,6 +20,11 @@
       (face-spec-set 'dired-subtree-depth-5-face '((t nil)) 'face-defface-spec)
       (face-spec-set 'dired-subtree-depth-6-face '((t nil)) 'face-defface-spec)))
 
+  (add-to-list 'package-selected-packages 'go-mode)
+  (add-hook 'go-mode-hook
+            (lambda () (setq tab-width 4)))
+
+
 
   ;; (when (require 'projectile nil t)
   ;;   (projectile-mode +1)

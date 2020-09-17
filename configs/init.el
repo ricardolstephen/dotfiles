@@ -22,6 +22,7 @@
     ;; Enable global line numbers
     (global-display-line-numbers-mode))
 
+  (setq-default fill-column 80)
   ;; Enable global fci
   (unless (version< emacs-version "25.1")
     (add-to-list 'package-selected-packages 'fill-column-indicator)
