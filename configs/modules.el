@@ -3,7 +3,7 @@
 
 
   (add-to-list 'package-selected-packages 'markdown-mode)
-  (add-hook 'markdown-mode-hook 'turn-off-auto-fill)
+  ;; (add-hook 'markdown-mode-hook 'turn-off-auto-fill)
 
   (add-to-list 'package-selected-packages 'projectile)
   (projectile-mode +1)
@@ -23,8 +23,6 @@
   (add-to-list 'package-selected-packages 'go-mode)
   (add-hook 'go-mode-hook
             (lambda () (setq tab-width 4)))
-
-
 
   ;; (when (require 'projectile nil t)
   ;;   (projectile-mode +1)
