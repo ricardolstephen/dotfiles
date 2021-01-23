@@ -8,6 +8,14 @@
 ;; https://emacs.stackexchange.com/questions/233
 (add-to-list 'package-selected-packages 'gnu-elpa-keyring-update)
 
+;; Select packages
+(add-to-list 'package-selected-packages 'fill-column-indicator)
+(add-to-list 'package-selected-packages 'dired-subtree)
+(add-to-list 'package-selected-packages 'projectile)
+(add-to-list 'package-selected-packages 'markdown-mode)
+(add-to-list 'package-selected-packages 'groovy-mode)
+(add-to-list 'package-selected-packages 'go-mode)
+
 
 ;;; Editor appearance
 ;;;;;;;;;;;;;;;;;;;;;
@@ -18,7 +26,6 @@
 ;; Setup fill column indicator
 (setq-default fill-column 80)
 ;; Enable global fci
-(add-to-list 'package-selected-packages 'fill-column-indicator)
 (require 'fill-column-indicator)
 (define-global-minor-mode global-fci-mode fci-mode
   (lambda () (when (and (not (string-match "^\*.*\*$" (buffer-name)))
@@ -123,7 +130,6 @@
     (advice-add 'find-file-read-args :around 'dired-subdir-aware)
     ))
 ;; Dired subtree
-(add-to-list 'package-selected-packages 'dired-subtree)
 (eval-after-load "dired"
   (lambda ()
     (define-key dired-mode-map (kbd "TAB") 'dired-subtree-toggle)
@@ -135,7 +141,6 @@
     (face-spec-set 'dired-subtree-depth-6-face '((t nil)) 'face-defface-spec)))
 
 ;; Projectile mode
-(add-to-list 'package-selected-packages 'projectile)
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
@@ -155,7 +160,6 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; Markdown-mode
-(add-to-list 'package-selected-packages 'markdown-mode)
 (eval-after-load "markdown-mode"
   (lambda ()
     (define-key markdown-mode-map (kbd "M-n")
@@ -167,11 +171,8 @@
 ;; Java mode
 (add-hook 'java-mode-hook (lambda () (setq fill-column 100)))
 
-;; Groovy mode
-(add-to-list 'package-selected-packages 'groovy-mode)
 
 ;; Golang mode
-(add-to-list 'package-selected-packages 'go-mode)
 (add-hook 'go-mode-hook
           (lambda () (setq tab-width 4)))
 
