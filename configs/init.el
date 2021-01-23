@@ -100,6 +100,7 @@
         (call-interactively 'comment-dwim)
       (progn (call-interactively 'comment-line) (previous-line)))))
 
+
 ;;; General modes
 ;;;;;;;;;;;;;;;;;
 
