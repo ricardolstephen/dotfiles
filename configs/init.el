@@ -15,6 +15,7 @@
 (add-to-list 'package-selected-packages 'markdown-mode)
 (add-to-list 'package-selected-packages 'groovy-mode)
 (add-to-list 'package-selected-packages 'go-mode)
+(add-to-list 'package-selected-packages 'yaml-mode)
 
 
 ;;; Editor appearance
@@ -160,7 +161,7 @@
 ;; Text mode
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
-;; Markdown-mode
+;; Markdown mode
 (eval-after-load "markdown-mode"
   (lambda ()
     (define-key markdown-mode-map (kbd "M-n")
@@ -168,6 +169,10 @@
     (define-key markdown-mode-map (kbd "M-p")
       (lambda () (interactive) (next-line -5)))
     (define-key markdown-mode-map (kbd "M-h") 'my-delete-backward-word)))
+
+;; Yaml mode
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
 ;; Java mode
 (add-hook 'java-mode-hook (lambda () (setq fill-column 100)))

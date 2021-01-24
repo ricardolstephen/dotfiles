@@ -40,4 +40,5 @@ Others (no install)
    - save-buffers-kill-emacs
 
 ## References
-1. https://dotfiles.github.io/
+[1] https://dotfiles.github.io/
+[2] https://github.com/anishathalye/dotbot
