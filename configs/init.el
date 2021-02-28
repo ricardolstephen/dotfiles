@@ -12,7 +12,9 @@
 (add-to-list 'package-selected-packages 'fill-column-indicator)
 (add-to-list 'package-selected-packages 'dired-subtree)
 (add-to-list 'package-selected-packages 'projectile)
+(add-to-list 'package-selected-packages 'neotree)
 (add-to-list 'package-selected-packages 'markdown-mode)
+(add-to-list 'package-selected-packages 'markdown-toc)
 (add-to-list 'package-selected-packages 'groovy-mode)
 (add-to-list 'package-selected-packages 'go-mode)
 (add-to-list 'package-selected-packages 'yaml-mode)
@@ -45,6 +47,9 @@
 
 ;; Disable backup files
 (setq make-backup-files nil)
+
+;; Prevent bell from ringing when using C-g or hitting start or end of file.
+(setq ring-bell-function 'ignore)
 
 
 ;;; Useful commands
@@ -168,7 +173,25 @@
       (lambda () (interactive) (next-line 5)))
     (define-key markdown-mode-map (kbd "M-p")
       (lambda () (interactive) (next-line -5)))
-    (define-key markdown-mode-map (kbd "M-h") 'my-delete-backward-word)))
+    (define-key markdown-mode-map (kbd "M-h") 'my-delete-backward-word)
+    (face-spec-set 'markdown-header-face-1 '((t (:inherit outline-1 :height 1.3))) 'face-defface-spec)
+    (face-spec-set 'markdown-header-face-2 '((t (:inherit outline-2 :height 1.2))) 'face-defface-spec)
+    (face-spec-set 'markdown-header-face-3 '((t (:inherit outline-3 :height 1.1))) 'face-defface-spec)
+    (face-spec-set 'markdown-header-face-4 '((t (:inherit outline-4 :height 1.0))) 'face-defface-spec)
+    (face-spec-set 'markdown-header-face-5 '((t (:inherit outline-5 :height 1.0))) 'face-defface-spec)
+    (face-spec-set 'markdown-header-face-6 '((t (:inherit outline-6 :height 1.0))) 'face-defface-spec)))
+
+;; (custom-set-faces
+;;  '(markdown-header-face-1 ((t (:inherit outline-1 :height 1.0))))
+;;  '(markdown-header-face-2 ((t (:inherit outline-2 :height 1.0))))
+;;  '(markdown-header-face-3 ((t (:inherit outline-3 :height 1.0))))
+;;  '(markdown-header-face-4 ((t (:inherit outline-4 :height 1.0))))
+;;  '(markdown-header-face-5 ((t (:inherit outline-5 :height 1.0))))
+;;  '(markdown-header-face-6 ((t (:inherit outline-6 :height 1.0)))))
+
+(add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-mode))
+
 
 ;; Yaml mode
 (require 'yaml-mode)

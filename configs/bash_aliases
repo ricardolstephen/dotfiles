@@ -70,85 +70,10 @@ if type brew &>/dev/null; then
     fi
 fi
 
-
-# Useful aliases
-alias sc="screen -d -R"
-alias ec="emacsclient -nw -a ''"
-alias em="emacsclient -c -a ''"
-alias l="less -R"
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-if [[ "$(uname)" == "Darwin" ]]; then
-    alias ls="ls -G"
-else
-    alias ls="ls --color"
+# Aliases
+if [[ -f "$DOTFILES_DIR/configs/aliases" ]]; then
+    . "$DOTFILES_DIR/configs/aliases"
 fi
-alias ll="ls -Alrth"
-alias grep='grep --color'
-alias df="df -h"
-RETURN_DIRECTORY="${PWD}"
-alias ret="cd ${RETURN_DIRECTORY}"
-
-
-# Find
-function f {
-  if [[ $# -eq 1 ]]; then
-    find . -iname "$1"
-  elif [[ $# -eq 2 ]]; then
-    find "$1" -iname "$2"
-  else
-    echo "Incorrect usage. Please use one of the below:"
-    echo "  f \${str}"
-    echo "  f \${location} \${str}"
-  fi
-}
-
-# Open
-function o {
-  if [[ "$(uname)" == "Darwin" ]]; then
-    open "${@:1}"
-  else
-    xdg-open "${@:1}"
-  fi
-}
-
-# Extract
-function x {
-  if [[ -f "$1" ]]; then
-    case "$1" in
-      *.tar.xz) tar xvf "$1";;
-      *.tar.bz2) tar xvjf "$1";;
-      *.tar.gz) tar xvzf "$1";;
-      *.bz2) bunzip2 -k "$1";;
-      *.gz) gunzip -k "$1";;
-      *.tar) tar xvf "$1";;
-      *.tbz2) tar xvjf "$1";;
-      *.tgz) tar xvzf "$1";;
-      *.zip) unzip "$1";;
-      *.Z) uncompress -k "$1";;
-      *) echo "Unable to extract '$1'.";;
-    esac
-  else
-    echo "'$1' does not exist or is not a regular file."
-  fi
-}
-
-# Python
-if type python &>/dev/null; then
-    alias py="python"
-fi
-if type python3 &>/dev/null; then
-    alias py3="python3"
-fi
-
-# Make emacs the default editor
-export EDITOR="emacs -nw -q --load $DOTFILES_DIR/configs/init.el"
-export VISUAL="emacs -q --load $DOTFILES_DIR/configs/init.el"
-
-# Scripts
-export PATH="$DOTFILES_DIR/scripts:${PATH}"
 
 # Custom configurations
 if [[ -f "$DOTFILES_DIR/local/custom" ]]; then

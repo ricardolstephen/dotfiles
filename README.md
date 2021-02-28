@@ -1,6 +1,5 @@
 # Dotfiles
 
-
 ## Installation
 
 1. Install requirements
@@ -14,31 +13,23 @@ sudo apt-get install curl tree
 ```
 git clone https://github.com/ricardolstephen/dotfiles
 cd dotfiles
-
 mkdir local
 mkdir local/defaults
 touch local/custom
+git -C local init
 ```
 
-3. Install configs, and be sure to save backups in local/defaults.
-
-- bash\_profile - plain bash\_profile
-- bash_aliases - bash goodies
-- init.el - emacs startup script
-- inputrc - readline configuration
-- screenrc - screen configuration
-
-Others (no install)
-- modules.el - helper for the emacs startup script
-- scripts/
-
+3. Install configs, and be sure to backup relevant files in local/defaults.
+```
+ln -s $PWD/configs/screenrc ~/.screenrc
+ln -s $PWD/configs/init.el ~/.emacs
+ln -s $PWD/configs/bash_aliases ~/.bash_aliases
+ln -s $PWD/configs/bash_aliases ~/.inputrc
+# ln -s $PWD/configs/zsh_aliases ~/.zsh_aliases
+```
 
 4. Install emacs packages
-   - Start emacs
-   - package-refresh-contents
-   - package-install-selected-packages
-   - save-buffers-kill-emacs
-
-## References
-[1] https://dotfiles.github.io/ \
-[2] https://github.com/anishathalye/dotbot
+   - Open emacs session
+   - M-x package-refresh-contents
+   - M-x package-install-selected-packages
+   - Restart emacs session
