@@ -1,0 +1,207 @@
+# Dotfiles
+if [[ $SHELL == /bin/zsh ]]; then
+    DOTFILES_DIR="$(dirname ${0:a:h})"
+elif [[ "$(uname)" == "Darwin" ]]; then
+    DOTFILES_DIR="$(dirname $(dirname $(greadlink -f "${BASH_SOURCE[0]}")))"
+else
+    DOTFILES_DIR="$(dirname $(dirname $(readlink -f "${BASH_SOURCE[0]}")))"
+fi
+alias dotfiles="cd $DOTFILES_DIR"
+
+# Enable 256color for screen terminals
+if [[ "$TERM" == "screen" ]]; then
+    export TERM="screen-256color"
+fi
+
+# Bash-specifics
+if [[ $SHELL == /bin/bash ]]; then
+    # Bash prompt
+    # Available colors
+    RST="\[\e[0m\]"   # reset
+    BLD="\[\e[1m\]"   # hicolor
+    UNL="\[\e[4m\]"   # underline
+    INV="\[\e[7m\]"   # inverse background and foreground
+    FBLK="\[\e[30m\]" # foreground black
+    FRED="\[\e[31m\]" # foreground red
+    FGRN="\[\e[32m\]" # foreground green
+    FYEL="\[\e[33m\]" # foreground yellow
+    FBLU="\[\e[34m\]" # foreground blue
+    FMAG="\[\e[35m\]" # foreground magenta
+    FCYN="\[\e[36m\]" # foreground cyan
+    FWHT="\[\e[37m\]" # foreground white
+    BBLK="\[\e[40m\]" # background black
+    BRED="\[\e[41m\]" # background red
+    BGRN="\[\e[42m\]" # background green
+    BYEL="\[\e[43m\]" # background yellow
+    BBLU="\[\e[44m\]" # background blue
+    BMAG="\[\e[45m\]" # background magenta
+    BCYN="\[\e[46m\]" # background cyan
+    BWHT="\[\e[47m\]" # background white
+    # Prompt format
+    PS1="$BLD$FGRN\u@\h$RST:$BLD$FBLU\w$RST$ "
+    # Use a different PS1 for remote connections.
+    if [[ -n "$SSH_TTY" ]]; then
+        PS1="$BLD$FGRN\u@\h$RST:$BLD$FMAG\w$RST$ "
+    fi
+
+    # Shell options
+    # Autocorrect typos in path names when using `cd`.
+    shopt -s cdspell
+    # Append to the Bash history file, rather than overwriting it.
+    shopt -s histappend
+    # Disable history expansion so `!` can be used in `rg -g !expr`.
+    set +H
+    # Replace directory names with the results of word expansion when performing
+    # filename completion.
+    if [[ "$(uname)" != "Darwin" ]]; then
+        shopt -s direxpand
+    fi
+
+    # Tab completions for many bash commands
+    if [[ -f /etc/bash_completion ]]; then
+	      source /etc/bash_completion
+    fi
+
+    # Homebrew tab completions
+    if type brew &>/dev/null; then
+        if [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]]; then
+            source "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+        else
+            for COMPLETION in "$(brew --prefix)/etc/bash_completion.d/"*; do
+                [[ -r "$COMPLETION" ]] && source "$COMPLETION"
+            done
+        fi
+    fi
+fi
+
+# Zsh-specifics
+if [[ $SHELL == /bin/zsh ]]; then
+    # Zsh prompt
+    # Prompt Color Table
+    fg_black="%{"$'\e[00;30m'"%}"
+    fg_red="%{"$'\e[00;31m'"%}"
+    fg_green="%{"$'\e[00;32m'"%}"
+    fg_yellow="%{"$'\e[00;33m'"%}"
+    fg_blue="%{"$'\e[00;34m'"%}"
+    fg_magenta="%{"$'\e[00;35m'"%}"
+    fg_cyan="%{"$'\e[00;36m'"%}"
+    fg_lgray="%{"$'\e[00;37m'"%}"
+    fg_dgray="%{"$'\e[01;30m'"%}"
+    fg_lred="%{"$'\e[01;31m'"%}"
+    fg_lgreen="%{"$'\e[01;32m'"%}"
+    fg_lyellow="%{"$'\e[01;33m'"%}"
+    fg_lblue="%{"$'\e[01;34m'"%}"
+    fg_pink="%{"$'\e[01;35m'"%}"
+    fg_lcyan="%{"$'\e[01;36m'"%}"
+    fg_white="%{"$'\e[01;37m'"%}"
+    # Attributes
+    at_normal="%{"$'\e[00m'"%}"
+    newline="%{"$'\n'"%}"
+    # Now for the real prompt
+    setopt PROMPT_SUBST
+    export PROMPT='%(!.${fg_red}.${fg_green})%n@${HOST_ALIAS}: ${fg_yellow}%~
+${at_normal}%# '
+
+    export WORDCHARS='*?_-.,[]~&;:!#$%^(){}<>\'
+    bindkey '^[h' backward-kill-word
+
+    # Homebrew tab completions
+#     if type brew &>/dev/null; then
+#         FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+# 
+#         autoload -Uz compinit
+#         compinit
+#     fi
+fi
+
+# Aliases
+alias sc="screen -d -R"
+alias ec="emacsclient -nw -a ''"
+alias em="emacsclient -c -a ''"
+alias l="less -R"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+if [[ "$(uname)" == "Darwin" ]]; then
+    alias ls="ls -G"
+else
+    alias ls="ls --color"
+fi
+alias ll="ls -Alrth"
+RETURN_DIRECTORY="${PWD}"
+alias ret="cd ${RETURN_DIRECTORY}"
+alias df="df -h"
+alias grep='grep --color'
+
+# Find
+function f {
+  if [[ $# -eq 1 ]]; then
+    find . -iname "$1"
+  elif [[ $# -eq 2 ]]; then
+    find "$1" -iname "$2"
+  else
+    echo "Incorrect usage. Please use one of the below:"
+    echo "  f \${str}"
+    echo "  f \${location} \${str}"
+  fi
+}
+
+# Open
+function o {
+  if [[ "$(uname)" == "Darwin" ]]; then
+    open "${@:1}"
+  else
+    xdg-open "${@:1}"
+  fi
+}
+
+# Extract
+function x {
+  if [[ -f "$1" ]]; then
+    case "$1" in
+      *.tar.xz) tar xvf "$1";;
+      *.tar.bz2) tar xvjf "$1";;
+      *.tar.gz) tar xvzf "$1";;
+      *.bz2) bunzip2 -k "$1";;
+      *.gz) gunzip -k "$1";;
+      *.tar) tar xvf "$1";;
+      *.tbz2) tar xvjf "$1";;
+      *.tgz) tar xvzf "$1";;
+      *.zip) unzip "$1";;
+      *.Z) uncompress -k "$1";;
+      *) echo "Unable to extract '$1'.";;
+    esac
+  else
+    echo "'$1' does not exist or is not a regular file."
+  fi
+}
+
+# Python
+if type python &>/dev/null; then
+    alias py="python"
+fi
+if type python3 &>/dev/null; then
+    alias py3="python3"
+fi
+
+# Make emacs the default editor
+export EDITOR="emacs -nw -q --load $DOTFILES_DIR/configs/init.el"
+export VISUAL="emacs -q --load $DOTFILES_DIR/configs/init.el"
+# export EDITOR="nano"
+# export VISUAL="nano"
+# if type emacsclient &>/dev/null; then
+#     export EDITOR="emacsclient -nw -a ''"
+#     export VISUAL="emacsclient -nw -a ''"
+# else
+#     export EDITOR="nano"
+#     export VISUAL="nano"
+# fi
+
+# Scripts
+export PATH="$DOTFILES_DIR/scripts:${PATH}"
+
+# Custom configurations
+if [[ -f "$DOTFILES_DIR/local/custom" ]]; then
+    . "$DOTFILES_DIR/local/custom"
+fi

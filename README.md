@@ -1,7 +1,6 @@
 # Dotfiles
 
 
-
 ## Installation
 
 1. Install requirements
@@ -39,3 +38,7 @@ Others (no install)
    - package-refresh-contents
    - package-install-selected-packages
    - save-buffers-kill-emacs
+
+## References
+[1] https://dotfiles.github.io/ \
+[2] https://github.com/anishathalye/dotbot

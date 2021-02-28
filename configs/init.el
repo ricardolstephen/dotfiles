@@ -1,60 +1,56 @@
-;; Spacemacs configuration
-(when (boundp 'dotspacemacs-emacs-leader-key)
-  (define-globalized-minor-mode global-fci-mode fci-mode
-    (lambda () (when (and (not (string-match "^\*.*\*$" (buffer-name)))
-                          (not (equal major-mode 'dired-mode))
-                          (not (equal major-mode 'scratch-mode)))
-                 (fci-mode 1))))
-  (global-fci-mode))
+;;; Package management
+;;;;;;;;;;;;;;;;;;;;;;
 
-;; Bare emacs configuration
-(unless (boundp 'dotspacemacs-emacs-leader-key)
-  (package-initialize)
+;; Initialize package management
+(package-initialize)
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+;; https://emacs.stackexchange.com/questions/233
+(add-to-list 'package-selected-packages 'gnu-elpa-keyring-update)
 
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+;; Select packages
+(add-to-list 'package-selected-packages 'fill-column-indicator)
+(add-to-list 'package-selected-packages 'dired-subtree)
+(add-to-list 'package-selected-packages 'projectile)
+(add-to-list 'package-selected-packages 'markdown-mode)
+(add-to-list 'package-selected-packages 'groovy-mode)
+(add-to-list 'package-selected-packages 'go-mode)
+(add-to-list 'package-selected-packages 'yaml-mode)
 
-  (unless (version< emacs-version "25.1")
-    ;; https://emacs.stackexchange.com/questions/233
-    (add-to-list 'package-selected-packages 'gnu-elpa-keyring-update))
 
-  (unless (version< emacs-version "26")
-    ;; Enable global line numbers
-    (global-display-line-numbers-mode))
+;;; Editor appearance
+;;;;;;;;;;;;;;;;;;;;;
 
-  (setq-default fill-column 80)
-  ;; Enable global fci
-  (unless (version< emacs-version "25.1")
-    (add-to-list 'package-selected-packages 'fill-column-indicator)
-    (require 'fill-column-indicator)
-    (define-global-minor-mode global-fci-mode fci-mode
-      (lambda () (when (and (not (string-match "^\*.*\*$" (buffer-name)))
-                            (not (equal major-mode 'dired-mode))
-                            (not (equal major-mode 'scratch-mode)))
-                   (fci-mode 1))))
-    (global-fci-mode))
+;; Enable global line numbers
+(global-display-line-numbers-mode)
 
-  ;; Disable backup files
-  (setq make-backup-files nil)
+;; Setup fill column indicator
+(setq-default fill-column 80)
+;; Enable global fci
+(require 'fill-column-indicator)
+(define-global-minor-mode global-fci-mode fci-mode
+  (lambda () (when (and (not (string-match "^\*.*\*$" (buffer-name)))
+                        (not (equal major-mode 'dired-mode))
+                        (not (equal major-mode 'scratch-mode)))
+               (fci-mode 1))))
+(global-fci-mode)
 
-  ;; Customize the mode line
-  (column-number-mode)
-  (which-function-mode)
+;; Customize the mode line
+(column-number-mode)
+(which-function-mode)
 
-  ;; Load custom configs
-  (load-file (concat (file-name-directory (file-truename load-file-name)) "modules.el"))
 
-  ;; Load custom file
-  (setq custom-file (concat
-                     (file-name-directory
-                      (directory-file-name
-                       (file-name-directory
-                        (file-truename load-file-name))))
-                     "local/custom.el"))
-  (when (file-exists-p custom-file)
-    (load-file custom-file)))
+;;; General editor behavior
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Delete, kill
+;; Disable backup files
+(setq make-backup-files nil)
+
+
+;;; Useful commands
+;;;;;;;;;;;;;;;;;;;
+
+;; Delete commands
 (defun my-delete-backward-word (p1) (interactive "*d")
        (if (use-region-p)
            (delete-region (point) (mark))
@@ -63,25 +59,14 @@
        (if (use-region-p)
            (delete-region (point) (mark))
          (progn (forward-word) (delete-region p1 (point)))))
-;; (defun my-delete-forward-line () (interactive "*")
-;;        (cond ((use-region-p) (delete-region (point) (mark)))
-;;              ((eq (point) (line-end-position)) (delete-forward-char 1))
-;;              (t (delete-region (point) (line-end-position)))))
-;; (defun my-kill-ring-save-line-or-region () (interactive)
-;;        (if (use-region-p)
-;;            (kill-ring-save (point) (mark))
-;;          (kill-ring-save (point) (line-end-position))))
-;; (defun my-kill-line-or-region () (interactive "*")
-;;        (if (use-region-p)
-;;            (kill-region (point) (mark))
-;;          (kill-line)))
 (define-key global-map (kbd "C-h") 'delete-backward-char)
 (define-key global-map (kbd "C-d") 'delete-forward-char)
 (define-key global-map (kbd "M-h") 'my-delete-backward-word)
 (define-key global-map (kbd "M-d") 'my-delete-forward-word)
-;; (define-key global-map (kbd "C-k") 'my-delete-forward-line)
-;; (define-key global-map (kbd "M-w") 'my-kill-ring-save-line-or-region)
-;; (define-key global-map (kbd "M-k") 'my-kill-line-or-region)
+
+;; Navigation
+(define-key global-map (kbd "M-n") (lambda () (interactive) (next-line 5)))
+(define-key global-map (kbd "M-p") (lambda () (interactive) (next-line -5)))
 
 ;; Window management
 (defun my-split-and-follow-below () (interactive)
@@ -104,15 +89,11 @@
 (define-key global-map (kbd "C-x i") 'my-previous-window)
 (define-key global-map (kbd "C-c h") 'my-swap-buffers)
 
-;; Navigation
-(define-key global-map (kbd "M-n") (lambda () (interactive) (next-line 5)))
-(define-key global-map (kbd "M-p") (lambda () (interactive) (next-line -5)))
-
 ;; Indentation
 (setq-default indent-tabs-mode nil)
 ;; (setq-default tab-width 2)
 
-;; Commenting
+;; Comments
 (define-key global-map (kbd "M-;")
   (lambda () (interactive)
     (if (or (use-region-p)
@@ -120,7 +101,11 @@
         (call-interactively 'comment-dwim)
       (progn (call-interactively 'comment-line) (previous-line)))))
 
-;; Isearch
+
+;;; General modes
+;;;;;;;;;;;;;;;;;
+
+;; Isearch mode
 (eval-after-load "isearch"
   (lambda () (define-key isearch-mode-map (kbd "C-h") 'isearch-del-char)))
 (add-hook 'isearch-mode-end-hook
@@ -130,7 +115,7 @@
                        (not isearch-mode-end-hook-quit))
               (goto-char isearch-other-end))))
 
-;; Dired
+;; Dired mode
 ;; In macOS, use `gls` instead of `ls`.
 ;; (when (string= system-type "darwin")
 ;;   (setq insert-directory-program (executable-find "gls")))
@@ -146,12 +131,20 @@
         (apply orig-fun args)))
     (advice-add 'find-file-read-args :around 'dired-subdir-aware)
     ))
+;; Dired subtree
+(eval-after-load "dired"
+  (lambda ()
+    (define-key dired-mode-map (kbd "TAB") 'dired-subtree-toggle)
+    (face-spec-set 'dired-subtree-depth-1-face '((t nil)) 'face-defface-spec)
+    (face-spec-set 'dired-subtree-depth-2-face '((t nil)) 'face-defface-spec)
+    (face-spec-set 'dired-subtree-depth-3-face '((t nil)) 'face-defface-spec)
+    (face-spec-set 'dired-subtree-depth-4-face '((t nil)) 'face-defface-spec)
+    (face-spec-set 'dired-subtree-depth-5-face '((t nil)) 'face-defface-spec)
+    (face-spec-set 'dired-subtree-depth-6-face '((t nil)) 'face-defface-spec)))
 
-;; Text-mode
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-
-;; Java-mode
-(add-hook 'java-mode-hook (lambda () (setq fill-column 100)))
+;; Projectile mode
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; Desktop-save
 (when (daemonp)
@@ -161,11 +154,14 @@
   (add-hook 'desktop-no-desktop-file-hook (lambda () (desktop-save "~/.emacs.d")))
   (add-hook 'kill-emacs-hook (lambda () (desktop-save "~/.emacs.d"))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Shared modules (spacemacs, bare emacs)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Markdown-mode
+;;; Language modes
+;;;;;;;;;;;;;;;;;;
+
+;; Text mode
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+;; Markdown mode
 (eval-after-load "markdown-mode"
   (lambda ()
     (define-key markdown-mode-map (kbd "M-n")
@@ -173,3 +169,29 @@
     (define-key markdown-mode-map (kbd "M-p")
       (lambda () (interactive) (next-line -5)))
     (define-key markdown-mode-map (kbd "M-h") 'my-delete-backward-word)))
+
+;; Yaml mode
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
+;; Java mode
+(add-hook 'java-mode-hook (lambda () (setq fill-column 100)))
+
+
+;; Golang mode
+(add-hook 'go-mode-hook
+          (lambda () (setq tab-width 4)))
+
+
+;;; Local configs
+;;;;;;;;;;;;;;;;;
+
+;; Load configs file
+;; (setq custom-file (concat
+;;                    (file-name-directory
+;;                     (directory-file-name
+;;                      (file-name-directory
+;;                       (file-truename load-file-name))))
+;;                    "local/custom.el"))
+;; (when (file-exists-p custom-file)
+;;   (load-file custom-file))
