@@ -24,7 +24,7 @@ git -C local init
 ln -s $PWD/configs/screenrc ~/.screenrc
 ln -s $PWD/configs/init.el ~/.emacs
 ln -s $PWD/configs/bash_aliases ~/.bash_aliases
-ln -s $PWD/configs/bash_aliases ~/.inputrc
+ln -s $PWD/configs/inputrc ~/.inputrc
 # ln -s $PWD/configs/zsh_aliases ~/.zsh_aliases
 ```
 

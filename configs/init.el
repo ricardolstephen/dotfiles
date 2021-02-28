@@ -181,14 +181,6 @@
     (face-spec-set 'markdown-header-face-5 '((t (:inherit outline-5 :height 1.0))) 'face-defface-spec)
     (face-spec-set 'markdown-header-face-6 '((t (:inherit outline-6 :height 1.0))) 'face-defface-spec)))
 
-;; (custom-set-faces
-;;  '(markdown-header-face-1 ((t (:inherit outline-1 :height 1.0))))
-;;  '(markdown-header-face-2 ((t (:inherit outline-2 :height 1.0))))
-;;  '(markdown-header-face-3 ((t (:inherit outline-3 :height 1.0))))
-;;  '(markdown-header-face-4 ((t (:inherit outline-4 :height 1.0))))
-;;  '(markdown-header-face-5 ((t (:inherit outline-5 :height 1.0))))
-;;  '(markdown-header-face-6 ((t (:inherit outline-6 :height 1.0)))))
-
 (add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-mode))
 

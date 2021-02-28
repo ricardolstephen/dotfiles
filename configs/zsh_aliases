@@ -1,5 +1,9 @@
 # Dotfiles
-DOTFILES_DIR="$(dirname $(dirname $0:A))"
+if [[ "$(uname)" == "Darwin" ]]; then
+    DOTFILES_DIR="$(dirname $(dirname $(greadlink -f "${(%):-%N}")))"
+else
+    DOTFILES_DIR="$(dirname $(dirname $(readlink -f "${(%):-%N}")))"
+fi
 alias dotfiles="cd $DOTFILES_DIR"
 
 # Enable 256color for screen terminals
